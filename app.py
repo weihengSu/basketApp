@@ -1,4 +1,5 @@
 from flask import Flask, render_template,json, request
+from login_check import *;
 app = Flask(__name__)
 
 @app.route("/")
@@ -11,16 +12,26 @@ def showSignUp():
 
 @app.route('/signUp',methods=['POST'])
 def signUp():
- 
-    # read the posted values from the UI
-    _name = request.form['inputName']
-    _email = request.form['inputEmail']
-    _password = request.form['inputPassword']
- 
-    # validate the received values
-    if _name and _email and _password:
-        return json.dumps({'html':'<span>All fields good !!</span>'})
-    else:
-        return json.dumps({'html':'<span>Enter the required fields</span>'})
+	if request.method == 'POST':
+		username = request.form['inputName']
+		email = request.form['inputEmail']
+		password = request.form['inputPassword']
+		if len(username) > 0:
+			create_user(username, email, password)
+	return render_template('/')	
+
+		
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+	error = None
+	if request.method == 'POST':
+		if request.form['username'] != 'admin' or request.form['password'] != 'admin':
+			error = 'Invalid credentials'
+		else:
+			return redirect(url_for('hello_world'))
+	return render_template('login.html', error=error)
+	
+		
+		
 if __name__ =="__main__":
-   app.run()
+   app.run(debug=True)
