@@ -1,6 +1,16 @@
-from flask import Flask, render_template,json, request
-from login_check import *;
+from flask import Flask, render_template,json, request, redirect, url_for, request, get_flashed_messages
+from login_check import *
+from flask.ext.login import LoginManager, UserMixin, current_user, login_user, logout_user, login_required
+from models import User
+
+
 app = Flask(__name__)
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+@login_manager.user_loader
+def load_user(user_id):
+	return User.get(user_id)
 
 @app.route("/")
 def main():
@@ -20,16 +30,24 @@ def signUp():
 			create_user(username, email, password)
 	return render_template('/')	
 
-		
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-	error = None
-	if request.method == 'POST':
-		if request.form['username'] != 'admin' or request.form['password'] != 'admin':
-			error = 'Invalid credentials'
-		else:
-			return redirect(url_for('hello_world'))
-	return render_template('login.html', error=error)
+
+@app.route('/showSignin')
+def showSignin():
+    return render_template('signin.html')
+	
+#@app.route('/', methods=['GET','POST'])
+#def login():
+#	if request.method == 'POST':
+#		username = request.form['username']
+#		password = request.form['password']
+#		email = request.form['email']
+#		if check_login(username, email, password):
+#			user = User(username)
+#			login_user(user)
+		#else:
+		#	return redirect(url_for('login'))
+#	return render_template('/login')
+
 	
 		
 		
