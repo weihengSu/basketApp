@@ -41,11 +41,11 @@
         <button id="btnSignUp" class="btn btn-lg btn-primary btn-block" type="button" >Sign up</button>
       </form -->
 	  <form class="form-signup" action="/signUp" method="POST">
-        <input type="text" class="form-control" placeholder="Username" name="username" value="{{
+        <input type="text" required class="form-control" placeholder="Username" name="username" value="{{
           request.form.username }}">
-		  <input type="email" class="form-control" placeholder="Email" name="email" value="{{
+		  <input type="email" required class="form-control" placeholder="Email" name="email" value="{{
           request.form.email }}">
-         <input type="password" class="form-control" placeholder="Password" name="password" value="{{
+         <input type="password" required class="form-control" placeholder="Password" name="password" value="{{
           request.form.password }}">
         <input class="btn btn-lg btn-primary btn-block" type="submit" value="Sign Up" id="btnSignin">
       </form>

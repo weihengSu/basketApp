@@ -36,11 +36,11 @@
       <h1>Sign In</h1>
       <br>
        <form class="form-signin" action="/login" method="post">
-        <input type="text" class="form-control" placeholder="Username" name="username" value="{{
+        <input type="text" required class="form-control" placeholder="Username" name="username" value="{{
           request.form.username }}">
-		  <input type="email" class="form-control" placeholder="Email" name="email" value="{{
+		  <input type="email" required class="form-control" placeholder="Email" name="email" value="{{
           request.form.email }}">
-         <input type="password" class="form-control" placeholder="Password" name="password" value="{{
+         <input type="password" required class="form-control" placeholder="Password" name="password" value="{{
           request.form.password }}">
         <input class="btn btn-lg btn-primary btn-block" type="submit" value="Sign in" id="btnSignin">
       </form>
