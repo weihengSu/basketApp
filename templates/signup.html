@@ -30,7 +30,7 @@
  
       <div class="jumbotron">
         <h1>Sign Up</h1>
-        <form class="form-signup" action="/signup" method="post">
+        <!--form class="form-signup" action="/showSignUp" method="POST">
         <label for="inputName" class="sr-only">Name</label>
         <input type="name" name="inputName" id="inputName" class="form-control" placeholder="Name" required autofocus>
         <label for="inputEmail" class="sr-only">Email address</label>
@@ -38,7 +38,16 @@
         <label for="inputPassword" class="sr-only">Password</label>
         <input type="password" name="inputPassword" id="inputPassword" class="form-control" placeholder="Password" required>
          
-        <button id="btnSignUp" class="btn btn-lg btn-primary btn-block" type="button" onclick="location.href = '/showSignUp';" >Sign up</button>
+        <button id="btnSignUp" class="btn btn-lg btn-primary btn-block" type="button" >Sign up</button>
+      </form -->
+	  <form class="form-signup" action="/signUp" method="POST">
+        <input type="text" class="form-control" placeholder="Username" name="username" value="{{
+          request.form.username }}">
+		  <input type="email" class="form-control" placeholder="Email" name="email" value="{{
+          request.form.email }}">
+         <input type="password" class="form-control" placeholder="Password" name="password" value="{{
+          request.form.password }}">
+        <input class="btn btn-lg btn-primary btn-block" type="submit" value="Sign Up" id="btnSignin">
       </form>
       </div>
 	</body>
