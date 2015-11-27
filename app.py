@@ -3,6 +3,7 @@ from login_check import *
 from flask.ext.login import LoginManager, UserMixin, current_user, login_user, logout_user, login_required
 from models import User
 
+#The web app is based on python 3.4+. python2 may not be compatible. 
 
 app = Flask(__name__)
 login_manager = LoginManager()
