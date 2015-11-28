@@ -138,7 +138,8 @@ def showViewUser():
 		cur.execute("SELECT user_admin FROM basket_user WHERE user_id = %(id)s", {'id': username })		
 		result = cur.fetchall()
 		if (result[0][0] == True):
-			return render_template('view_user.html')
+			#return render_template('view_user.html')
+			return redirect(url_for('viewUsers'))
 		else:
 			return render_template('error.html', error = 'You must be an admin to access the page')
 	except Exception as e:
@@ -163,7 +164,12 @@ def viewUsers():
 			cur.execute("CREATE VIEW USERS_VIEW AS SELECT user_id, user_email, user_admin FROM	basket_user;")
 			cur.execute("SELECT * FROM USERS_VIEW;")
 			user_data = cur.fetchall()
-			return user_data
+			users_data = []
+			sub_data =[]
+			for user in user_data:
+			#	sub_data.append(user[0])
+				users_data.append(user)
+			return render_template('view_user.html', users_data = users_data)
 		else:
 			return render_template('error.html', error = 'Unauthorized Access')
 	except Exception as e:

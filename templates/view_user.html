@@ -38,29 +38,32 @@
         <div class="panel panel-primary">
         <!-- Default panel contents -->
         <div class="panel-heading"><h4>Users</h4></div>
-        <table class="table table-striped">
+        <table class="table table-striped" action="/viewUsers">
             <thead>
             <tr>
                 <th><h5>User Id</h5></th>
                 <th><h5>User Email</h5></th>
-				<th><h5>Admin(true/false)</h5></th>
+				<th><h5>Admin(True/False)</h5></th>
 
             </tr>
             </thead>
             <tbody>
-            {% for user in USER_DATA %}
+            {% for user in users_data %}
                 <tr>
-                    <td>{% print user[0][0] %}</td>
-                    <td>{% print user[0][1] %}</td>
-					<td>{% print user[0][2] %}</td>
+                    <td>{{user[0]}}</td>
+                    <td>{{user[1]}}</td>
+					<td>{{user[2]}}</td>
 
                 </tr>
             {% endfor %}
             </tbody>
         </table>
+		
+		
+	
     </div>
 	 
-	 
+
 	 
 	 
 	 
