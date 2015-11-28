@@ -1,49 +1,60 @@
 from flask.ext.login import UserMixin
 import psycopg2
 
+
+
+
+
 # Take care of User model
 class UserNotFoundException(Exception):
-    pass
+	pass
+
 
 class User(UserMixin):
 
 
-    CONN = psycopg2.connect("dbname='basketball' user='postgres' "
+	CONN = psycopg2.connect("dbname='basketball' user='postgres' "
 									 "host='localhost' password='password'")	
-    CUR = CONN.cursor()
-    CUR.execute('SELECT user_id, user_password FROM basket_user')
-    USERS = dict(CUR.fetchall()) 
-    CUR.execute('SELECT user_id, user_email FROM basket_user')
-    EMAILS = dict(CUR.fetchall()) 
-    
-    CUR.close()
-    CONN.close()
+	CUR = CONN.cursor()
+	CUR.execute('SELECT user_id, user_password FROM basket_user')
+	USER = dict(CUR.fetchall()) 
+	CUR.execute('SELECT user_id, user_email FROM basket_user')
+	EMAIL = dict(CUR.fetchall()) 
+	CUR.execute('SELECT user_id, user_admin FROM basket_user')
+	USER_ADMIN = dict(CUR.fetchall()) 
+	
+	CUR.close()
+	CONN.close()
 
-    def __init__(self, id):
-        if id not in self.USERS or id not in self.EMAILS:
-            raise UserNotFoundException
-        self.id = id
-        self.password = self.USERS[id]
-        self.name = self.EMAILS[id]
+	def __init__(self, user_id):
+		if user_id not in self.USER or user_id not in self.EMAIL or user_id not in self.USER_ADMIN:
+			raise UserNotFoundException
+		self.user_id = user_id
+		self.password = self.USER[user_id]
+		self.name = self.EMAIL[user_id]
+		self.user_admin = self.USER_ADMIN[user_id]
 
-    def is_authenticated(self):
-        return True
+	def is_authenticated(self):
+		return True
 
-    def is_active(self):
-        return True
+	def is_active(self):
+		return True
 
-    def is_anonymous(self):
-        return False
+	def is_anonymous(self):
+		return False
 
-    def get_id(self):
-        return unicode(self.id)
+	def get_id(self):
+		return self.user_id
+	
+	def get_role(self):
+		return self.user_admin
 
-    def get_name(self):
-        return self.name
+	def get_name(self):
+		return self.name
 
-    @classmethod
-    def get(cls, id):
-        try:
-            return cls.USERS[id]
-        except KeyError:
-            return None
+	@classmethod
+	def get(cls, user_id):
+		try:
+			return cls.USER[user_id]
+		except KeyError:
+			return None
