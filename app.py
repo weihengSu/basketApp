@@ -243,15 +243,6 @@ def viewPlayers():
 
 		
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 	
 
 
@@ -318,6 +309,87 @@ def viewPlayerStat():
 
 
 
+		
+		
+		
+		
+
+
+
+
+
+
+
+	
+@app.route('/showTeamInfo')
+@nocache
+def showTeamInfo():
+	return render_template('team_info.html', user = session.get('user'))
+
+
+@app.route('/addTeamInfo',methods=['GET','POST'])
+@nocache
+def addTeamInfo():
+	if request.method == 'POST':
+		conn = psycopg2.connect(database="basketball", user="postgres", password="password")							 
+		cur = conn.cursor()
+		teamId = request.form['team_id']
+		teamName = request.form['team_name']
+		conferenceId = request.form['conference_id']	
+		cur.execute("SELECT team_id FROM team;")		
+		result = cur.fetchall()
+		team_list = []
+		for i in result:
+			team_list.append(i[0])
+		if(teamId not in team_list):		
+			cur.execute("INSERT INTO team (team_id, team_name, conference_id) VALUES (%s, %s, %s)",(teamId, teamName, conferenceId))
+			conn.commit()
+			return redirect(url_for('userHome'))
+		else: 
+			return render_template('error.html',error = 'Team already exists. Try to add another team.')
+		cur.close()
+		conn.close()
+			
+	else:
+		return render_template("userHome.html")
+
+@app.route('/showViewTeam')
+@nocache
+def showViewTeam():
+	return redirect(url_for('viewTeams'))
+
+					
+	
+@app.route('/viewTeams')
+@nocache
+@login_required
+def viewTeams():
+	try:
+		conn = psycopg2.connect(database="basketball", user="postgres", password="password")							 
+		cur = conn.cursor()
+		cur.execute("CREATE VIEW TEAM_VIEW AS SELECT team_id, team_name, conference_id FROM team;")
+		cur.execute("SELECT * FROM TEAM_VIEW;")
+		teams_data = cur.fetchall()
+		return render_template('view_teamInfo.html', teams_data = teams_data, user = session.get('user'))
+	except Exception as e:
+		return render_template('error.html', error = str(e))	
+	finally:
+		cur.close()
+		conn.close()			
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 
 
 	
