@@ -34,28 +34,30 @@
  
  
         <div class="jumbotron">
-            <h1>Welcome Home</h1>
+            <h1>Players Information</h1>
 			
  
         </div>
         <div class="panel panel-primary">
         <!-- Default panel contents -->
-        <div class="panel-heading"><h4>Users</h4></div>
-        <table class="table table-striped" action="/viewUsers">
+        <div class="panel-heading"><h4>Players</h4></div>
+        <table class="table table-striped" action="/viewPlayers">
             <thead>
             <tr>
-                <th><h5>User Id</h5></th>
-                <th><h5>User Email</h5></th>
-				<th><h5>Admin(True/False)</h5></th>
+                <th><h5>Player Id</h5></th>
+                <th><h5>Player name</h5></th>
+				<th><h5>Player Income</h5></th>
+				<th><h5>Player Position</h5></th>
 
             </tr>
             </thead>
             <tbody>
-            {% for user in users_data %}
+            {% for player in players_data %}
                 <tr>
-                    <td>{{user[0]}}</td>
-                    <td>{{user[1]}}</td>
-					<td>{{user[2]}}</td>
+                    <td>{{player[0]}}</td>
+                    <td>{{player[1]}}</td>
+					<td>{{player[2]}}</td>
+                    <td>{{player[3]}}</td>
 
                 </tr>
             {% endfor %}
@@ -80,6 +82,3 @@
 </body>
  
 </html>
-
-
-    

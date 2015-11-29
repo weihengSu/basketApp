@@ -4,6 +4,7 @@ from flask.ext.login import LoginManager, UserMixin, current_user, login_user, l
 from models import *
 from flask import session
 from nocache import *
+
 #The web app is based on python 3.4+. python2 may not be compatible. 
 
 app = Flask(__name__)
@@ -44,7 +45,10 @@ def signUp():
 		password = request.form['password']	
 		cur.execute("SELECT user_id FROM basket_user WHERE user_id = %(id)s", {'id': username })		
 		result = cur.fetchall()
-		if(username not in result[0]):		
+		user_list = []
+		for i in result:
+			user_list.append(i[0])
+		if(username not in user_list):		
 			cur.execute("INSERT INTO basket_user (user_id, user_email,user_password) VALUES (%s, %s, %s)",(username, email, password))
 			conn.commit()
 			return redirect(url_for('main'))
@@ -86,11 +90,10 @@ def login():
 				login_user(user)
 				session['user'] = result[0][0]
 				return redirect(url_for('userHome'))
-
 			else:
-				return render_template('error.html',error = 'Wrong Email address or Password.')
+				return render_template('error.html',error = 'Wrong Email address or password.')
 		else:
-			return render_template('error.html',error = 'Wrong Email address or Password.')
+			return render_template('error.html',error = 'Wrong Email address or password.')
  
  
 	except Exception as e:
@@ -105,7 +108,7 @@ def login():
 @login_required
 def userHome():
 	if session.get('user'):
-		return render_template('userHome.html')
+		return render_template('userHome.html', user=session.get('user'))
 	else:
 		return render_template('error.html',error = 'Unauthorized access.')	
 
@@ -169,7 +172,7 @@ def viewUsers():
 			for user in user_data:
 			#	sub_data.append(user[0])
 				users_data.append(user)
-			return render_template('view_user.html', users_data = users_data)
+			return render_template('view_user.html', users_data = users_data, user = session.get('user'))
 		else:
 			return render_template('error.html', error = 'Unauthorized Access')
 	except Exception as e:
@@ -178,6 +181,77 @@ def viewUsers():
 		cur.close()
 		conn.close()	
 	
+@app.route('/showPlayerInfo')
+@nocache
+def showPlayerInfo():
+	return render_template('player_info.html', user = session.get('user'))
+
+
+@app.route('/addPlayerInfo',methods=['GET','POST'])
+@nocache
+def addPlayerInfo():
+	if request.method == 'POST':
+		conn = psycopg2.connect(database="basketball", user="postgres", password="password")							 
+		cur = conn.cursor()
+		playerId = request.form['player_id']
+		playerName = request.form['player_name']
+		playerIncome = request.form['player_income']
+		playerPosition = request.form['player_position']		
+		cur.execute("SELECT player_id FROM player_info;")		
+		result = cur.fetchall()
+		player_list = []
+		for i in result:
+			player_list.append(i[0])
+		if(playerName not in player_list):		
+			cur.execute("INSERT INTO player_info (player_id, player_name, player_income, player_position) VALUES (%s, %s, %s, %s)",(playerId, playerName, playerIncome, playerPosition))
+			conn.commit()
+			return redirect(url_for('userHome'))
+		else: 
+			return render_template('error.html',error = 'Player already exists. Try to add another player or update an existing player.')
+		cur.close()
+		conn.close()
+			
+	else:
+		return render_template("userHome.html")
+
+@app.route('/showViewPlayer')
+@nocache
+def showViewPlayer():
+	return redirect(url_for('viewPlayers'))
+
+					
+	
+@app.route('/viewPlayers')
+@nocache
+@login_required
+def viewPlayers():
+	try:
+		conn = psycopg2.connect(database="basketball", user="postgres", password="password")							 
+		cur = conn.cursor()
+		cur.execute("CREATE VIEW PLAYERS_VIEW AS SELECT player_id, player_name, player_income, player_position FROM	player_info;")
+		cur.execute("SELECT * FROM PLAYERS_VIEW;")
+		players_data = cur.fetchall()
+		return render_template('view_playerInfo.html', players_data = players_data, user = session.get('user'))
+	except Exception as e:
+		return render_template('error.html', error = str(e))	
+	finally:
+		cur.close()
+		conn.close()	
+
+
+
+
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 	
 	
 	

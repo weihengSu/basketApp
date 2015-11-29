@@ -22,6 +22,7 @@
 		  
             <nav>
                 <ul class="nav nav-pills pull-right">
+				      <li style="color:blue;"><b>Logged in: {{user}}</b></li> 
 				    <li><a href="/showViewUser"> View Users(Admin Only)</a></li> 
                     <li role="presentation" class="active"><a href="/">Logout</a>
                     </li>
@@ -29,18 +30,19 @@
             </nav>
             <h3 class="text-muted">Basketball App</h3>
         </div>
- 
-        <div class="jumbotron">
+	
+		      <div class="jumbotron">
             <h1>Welcome Home</h1>
 			
  
         </div>
+      
      
- 
+         
  
         
             <ul class="nav navbar-nav" style="text-align:center;">
-            <li><a href="#">Player Information</a></li>
+            <li><a href="/showPlayerInfo">Player Information</a></li>
 			<li><a href="#">Player Statistics</a></li>
             <li><a href="#">Team</a></li>
 			<li><a href="#">Team Statistics</a></li>
