@@ -43,7 +43,7 @@ def signUp():
 		username = request.form['username']
 		email = request.form['email']
 		password = request.form['password']	
-		cur.execute("SELECT user_id FROM basket_user WHERE user_id = %(id)s", {'id': username })		
+		cur.execute("SELECT user_id FROM basket_user;")		
 		result = cur.fetchall()
 		user_list = []
 		for i in result:
@@ -202,12 +202,12 @@ def addPlayerInfo():
 		player_list = []
 		for i in result:
 			player_list.append(i[0])
-		if(playerName not in player_list):		
+		if(playerId not in player_list):		
 			cur.execute("INSERT INTO player_info (player_id, player_name, player_income, player_position) VALUES (%s, %s, %s, %s)",(playerId, playerName, playerIncome, playerPosition))
 			conn.commit()
 			return redirect(url_for('userHome'))
 		else: 
-			return render_template('error.html',error = 'Player already exists. Try to add another player or update an existing player.')
+			return render_template('error.html',error = 'Player already exists. Try to add another player.')
 		cur.close()
 		conn.close()
 			
