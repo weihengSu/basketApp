@@ -253,6 +253,73 @@ def viewPlayers():
 		
 		
 	
+
+
+
+
+	
+@app.route('/showPlayerStat')
+@nocache
+def showPlayerStat():
+	return render_template('player_stat.html', user = session.get('user'))
+
+
+@app.route('/addPlayerStat',methods=['GET','POST'])
+@nocache
+def addPlayerStat():
+	if request.method == 'POST':
+		conn = psycopg2.connect(database="basketball", user="postgres", password="password")							 
+		cur = conn.cursor()
+		playerId = request.form['playerS_id']
+		playerName = request.form['playerS_name']
+		playerTwoPoints = request.form['player_twoPoints']
+		playerThreePoints = request.form['player_threePoints']		
+		cur.execute("SELECT playerStat_id FROM player_stat;")		
+		result = cur.fetchall()
+		player_list = []
+		for i in result:
+			player_list.append(i[0])
+		if(playerId not in player_list):		
+			cur.execute("INSERT INTO player_stat (playerStat_id, playerStat_name, player_twoPoints, player_threePoints) VALUES (%s, %s, %s, %s)",(playerId, playerName, playerTwoPoints, playerThreePoints))
+			conn.commit()
+			return redirect(url_for('userHome'))
+		else: 
+			return render_template('error.html',error = 'Player statistics information already exists. Try to add another player.')
+		cur.close()
+		conn.close()
+			
+	else:
+		return render_template("userHome.html")
+
+@app.route('/showViewPlayerStat')
+@nocache
+def showViewPlayerStat():
+	return redirect(url_for('viewPlayerStat'))
+
+					
+	
+@app.route('/viewPlayerStat')
+@nocache
+@login_required
+def viewPlayerStat():
+	try:
+		conn = psycopg2.connect(database="basketball", user="postgres", password="password")							 
+		cur = conn.cursor()
+		cur.execute("CREATE VIEW PLAYERSTAT_VIEW AS SELECT playerStat_id, playerStat_name, player_twoPoints, player_threePoints FROM player_stat;")
+		cur.execute("SELECT * FROM PLAYERSTAT_VIEW;")
+		players_data = cur.fetchall()
+		return render_template('view_playerStat.html', players_data = players_data, user = session.get('user'))
+	except Exception as e:
+		return render_template('error.html', error = str(e))	
+	finally:
+		cur.close()
+		conn.close()	
+
+
+
+
+
+
 	
 	
 if __name__ =="__main__":
