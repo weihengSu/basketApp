@@ -861,6 +861,83 @@ def viewReferee():
 		
 
 
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+
+	
+@app.route('/showChampions')
+@nocache
+def showChampions():
+	return render_template('champions.html', user = session.get('user'))
+
+
+@app.route('/addChampions',methods=['GET','POST'])
+@nocache
+def addChampions():
+	if request.method == 'POST':
+		conn = psycopg2.connect(database="basketball", user="postgres", password="password")							 
+		cur = conn.cursor()
+		divisionId = request.form['division_id']
+		divisionName = request.form['division_name']
+		divisionChamp = request.form['division_champion']
+		finalChamp = request.form['final_champion']		
+		cur.execute("SELECT division_id FROM champions;")		
+		result = cur.fetchall()
+		division_list = []
+		for i in result:
+			division_list.append(i[0])
+		cur.execute("SELECT division_id FROM division;")
+		resultI = cur.fetchall()
+		divisionI_list = []
+		for i in resultI:
+			divisionI_list.append(i[0])
+		
+		if(divisionId in divisionI_list):		
+			cur.execute("INSERT INTO champions (division_id, division_name, division_champion, final_champion) VALUES (%s, %s, %s, %s)",(divisionId, divisionName, divisionChamp, finalChamp))
+			conn.commit()
+			return redirect(url_for('userHome'))
+		else: 
+			return render_template('error.html',error = 'Champion information already exists or division has not been added. Try to add a division or the referee information of an existing team.')
+		cur.close()
+		conn.close()
+			
+	else:
+		return render_template("userHome.html")
+
+@app.route('/showViewChampion')
+@nocache
+def showViewChampion():
+	return redirect(url_for('viewChampion'))
+
+					
+	
+@app.route('/viewChampion')
+@nocache
+@login_required
+def viewChampion():
+	try:
+		conn = psycopg2.connect(database="basketball", user="postgres", password="password")							 
+		cur = conn.cursor()
+		cur.execute("CREATE VIEW champion_VIEW AS SELECT division_id, division_name, division_champion, final_champion FROM champions;")
+		cur.execute("SELECT * FROM champion_VIEW;")
+		champion_data = cur.fetchall()
+		return render_template('view_champion.html', champion_data = champion_data, user = session.get('user'))
+	except Exception as e:
+		return render_template('error.html', error = str(e))	
+	finally:
+		cur.close()
+		conn.close()			
+		
 
 
 		

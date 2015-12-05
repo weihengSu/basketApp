@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+ 
+<head>
+    <title>Basketball Database App</title>
+ 
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Expires" content="-1" />
+    <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+ 
+    <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
+    <link href="../static/css/signup.css" rel="stylesheet">
+ 
+ 
+</head>
+ 
+<body>
+
+    <div class="container">
+        <div class="header">
+		  
+            <nav>
+                <ul class="nav nav-pills pull-right">
+				    <li style="color:blue;"><b>Logged in: {{user}}</b></li> 
+				    <li><a href="/showViewUser"> View Users(Admin Only)</a></li> 
+                    <li role="presentation" class="active"><a href="/">Logout</a>
+                    </li>
+                </ul>
+            </nav>
+            <h3 class="text-muted">Basketball App</h3>
+        </div>
+ 
+ 
+ 
+        <div class="jumbotron">
+            <h1>Championship Information</h1>
+			
+ 
+        </div>
+        <div class="panel panel-primary">
+        <!-- Default panel contents -->
+        <div class="panel-heading"><h4>Championship information</h4></div>
+        <table class="table table-striped" action="/viewChampion">
+            <thead>
+            <tr>
+                <th><h5>Division Id</h5></th>
+                <th><h5>Division name</h5></th>
+				<th><h5>Division Championship</h5></th>
+                <th><h5>Final Championship</h5></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for champion in champion_data %}
+                <tr>
+                    <td>{{champion[0]}}</td>
+                    <td>{{champion[1]}}</td>
+					<td>{{champion[2]}}</td>
+                    <td>{{champion[3]}}</td>
+       
+
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+		
+		
+	
+    </div>
+	 
+	 
+	 </div>
+  
+     
+</body>
+</html>
