@@ -353,7 +353,7 @@ def addTeamInfo():
 			conn.commit()
 			return redirect(url_for('userHome'))
 		else: 
-			return render_template('error.html',error = 'Team already exists. Try to add another team.')
+			return render_template('error.html',error = 'Team already exists or division has not been added. Try to add another team and add a new division.')
 		cur.close()
 		conn.close()
 			
@@ -437,7 +437,7 @@ def addTeamStat():
 			conn.commit()
 			return redirect(url_for('userHome'))
 		else: 
-			return render_template('error.html',error = 'Team statistics information already exists or Team has not been added. Try to add another player.')
+			return render_template('error.html',error = 'Team statistics information already exists or Team has not been added. Try to add a Team first.')
 		cur.close()
 		conn.close()
 			
@@ -811,23 +811,22 @@ def addReferee():
 		divisionName = request.form['division_name']
 		refereeId = request.form['referee_id']
 		refereeName = request.form['referee_name']		
-		cur.execute("SELECT division_id FROM referee;")		
+		cur.execute("SELECT referee_id FROM referee;")		
 		result = cur.fetchall()
-		division_list = []
+		referee_list = []
 		for i in result:
-			division_list.append(i[0])
-		cur.execute("SELECT division_id FROM division;")
+			referee_list.append(i[0])
+		cur.execute("SELECT division_id FROM division;")		
 		resultI = cur.fetchall()
-		divisionI_list = []
+		division_list = []
 		for i in resultI:
-			divisionI_list.append(i[0])
-		
-		if(divisionId not in division_list and divisionId in divisionI_list):		
+			division_list.append(i[0])
+		if(divisionId in division_list and refereeId not in referee_list):		
 			cur.execute("INSERT INTO referee (division_id, division_name, referee_id, referee_name) VALUES (%s, %s, %s, %s)",(divisionId, divisionName, refereeId, refereeName))
 			conn.commit()
 			return redirect(url_for('userHome'))
 		else: 
-			return render_template('error.html',error = 'Referee information already exists or division has not been added. Try to add a division or the referee information of an existing team.')
+			return render_template('error.html',error = 'Referee information already exists. Try to add another referee information of an existing team.')
 		cur.close()
 		conn.close()
 			
