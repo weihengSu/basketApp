@@ -196,14 +196,14 @@ def addPlayerInfo():
 		playerId = request.form['player_id']
 		playerName = request.form['player_name']
 		playerPosition = request.form['player_position']	
-		teamId = request.form['team_id']		
+		teamName = request.form['team_name']		
 		cur.execute("SELECT player_id FROM player_info;")		
 		result = cur.fetchall()
 		player_list = []
 		for i in result:
 			player_list.append(i[0])
 		if(playerId not in player_list):		
-			cur.execute("INSERT INTO player_info (player_id, player_name, player_position, team_id) VALUES (%s, %s, %s, %s)",(playerId, playerName, playerPosition, teamId))
+			cur.execute("INSERT INTO player_info (player_id, player_name, player_position, team_name) VALUES (%s, %s, %s, %s)",(playerId, playerName, playerPosition, teamName))
 			conn.commit()
 			return redirect(url_for('userHome'))
 		else: 
@@ -227,7 +227,7 @@ def viewPlayers():
 	try:
 		conn = psycopg2.connect(database="basketball", user="postgres", password="password")							 
 		cur = conn.cursor()
-		cur.execute("CREATE VIEW PLAYERS_VIEW AS SELECT player_id, player_name, player_position, team_id FROM player_info;")
+		cur.execute("CREATE VIEW PLAYERS_VIEW AS SELECT player_id, player_name, player_position, team_name FROM player_info;")
 		cur.execute("SELECT * FROM PLAYERS_VIEW;")
 		players_data = cur.fetchall()
 		return render_template('view_playerInfo.html', players_data = players_data, user = session.get('user'))
