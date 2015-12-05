@@ -22,7 +22,7 @@
 		  
             <nav>
                 <ul class="nav nav-pills pull-right">
-				      <li style="color:blue;"><b>Logged in: {{user}}</b></li> 
+				    <li style="color:blue;"><b>Logged in: {{user}}</b></li> 
 				    <li><a href="/showViewUser"> View Users(Admin Only)</a></li> 
                     <li role="presentation" class="active"><a href="/">Logout</a>
                     </li>
@@ -30,39 +30,47 @@
             </nav>
             <h3 class="text-muted">Basketball App</h3>
         </div>
-	
-		      <div class="jumbotron">
-            <h1>Welcome Home</h1>
+ 
+ 
+ 
+        <div class="jumbotron">
+            <h1>Player Injury Information</h1>
 			
  
         </div>
-      
-     
-         
- 
-        
-            <ul class="nav navbar-nav" style="text-align:center;">
-            <li><a href="/showPlayerInfo">Player Information</a></li>
-			<li><a href="/showPlayerStat">Player Statistics</a></li>
-			<li><a href="/showPlayerInjury">Player Injury</a></li>
-            <li><a href="/showTeamInfo">Team</a></li>
-			<li><a href="/showTeamStat">Team Statistics</a></li>
-			<li><a href="/showCoach">Coach</a></li>
-			<li><a href="#">Divisions</a></li>
-			<li><a href="#">Standings</a></li>
-            <li><a href="#">Referee Information</a></li>
-			<li><a href="#">Champions</a></li>
-			<li><a href="#">Search Player</a></li>
-			<li><a href="#">Search Team</a></li>
-			</ul>
- 
+        <div class="panel panel-primary">
+        <!-- Default panel contents -->
+        <div class="panel-heading"><h4>Players</h4></div>
+        <table class="table table-striped" action="/viewPlayerInjury">
+            <thead>
+            <tr>
+                <th><h5>Player Id</h5></th>
+                <th><h5>Player name</h5></th>
+				<th><h5>Injury</h5></th>
+
+            </tr>
+            </thead>
+            <tbody>
+            {% for player in players_data %}
+                <tr>
+                    <td>{{player[0]}}</td>
+                    <td>{{player[1]}}</td>
+					<td>{{player[2]}}</td>
+  
        
-           
-        </div>
+
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+		
+		
 	
-   </div>
+    </div>
+	 
+	 
+	 </div>
   
      
 </body>
- 
 </html>

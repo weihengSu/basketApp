@@ -553,7 +553,85 @@ def viewPlayerInjury():
 
 
 
+		
+		
+		
+		
+		
+		
+		
+		
 
+		
+		
+
+
+	
+@app.route('/showCoach')
+@nocache
+def showCoach():
+	return render_template('team_coach.html', user = session.get('user'))
+
+
+@app.route('/addCoach',methods=['GET','POST'])
+@nocache
+def addCoach():
+	if request.method == 'POST':
+		conn = psycopg2.connect(database="basketball", user="postgres", password="password")							 
+		cur = conn.cursor()
+		teamId = request.form['team_id']
+		teamName = request.form['team_name']
+		coachName = request.form['coach_name']		
+		cur.execute("SELECT team_id FROM team_coach;")		
+		result = cur.fetchall()
+		team_list = []
+		for i in result:
+			team_list.append(i[0])
+		cur.execute("SELECT team_id FROM team;")
+		resultI = cur.fetchall()
+		coach_list = []
+		for i in resultI:
+			coach_list.append(i[0])
+		
+		if(teamId not in team_list and teamId in coach_list):		
+			cur.execute("INSERT INTO team_coach (team_id, team_name, coach_name) VALUES (%s, %s, %s)",(teamId, teamName, coachName))
+			conn.commit()
+			return redirect(url_for('userHome'))
+		else: 
+			return render_template('error.html',error = 'Coach information already exists or Team has not been added. Try to add a team or a coach of an existing team.')
+		cur.close()
+		conn.close()
+			
+	else:
+		return render_template("userHome.html")
+
+@app.route('/showViewCoach')
+@nocache
+def showViewCoach():
+	return redirect(url_for('viewCoach'))
+
+					
+	
+@app.route('/viewCoach')
+@nocache
+@login_required
+def viewCoach():
+	try:
+		conn = psycopg2.connect(database="basketball", user="postgres", password="password")							 
+		cur = conn.cursor()
+		cur.execute("CREATE VIEW COACH_VIEW AS SELECT team_id, team_name, coach_name FROM team_coach;")
+		cur.execute("SELECT * FROM COACH_VIEW;")
+		coaches_data = cur.fetchall()
+		return render_template('view_coach.html', coaches_data = coaches_data, user = session.get('user'))
+	except Exception as e:
+		return render_template('error.html', error = str(e))	
+	finally:
+		cur.close()
+		conn.close()	
+		
+		
+		
+		
 
 
 
