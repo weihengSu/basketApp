@@ -33,13 +33,13 @@
  
  
         <div class="jumbotron">
-            <h1><a href="/showViewTeam">Click here to view Team information</a></h1>
+            <h1><a href="/viewTeamStat">Click here to view Team Statistics information</a></h1>
 			
  
         </div>
  
       <div class="jumbotron">
-        <h1>Add Team Information</h1>
+        <h1>Add Team Statistics Information</h1>
         <!--form class="form-signup" action="/showSignUp" method="POST">
         <label for="inputName" class="sr-only">Name</label>
         <input type="name" name="inputName" id="inputName" class="form-control" placeholder="Name" required autofocus>
@@ -50,19 +50,26 @@
          
         <button id="btnSignUp" class="btn btn-lg btn-primary btn-block" type="button" >Sign up</button>
       </form -->
-	  <form  class="form-signup" action="/addTeamInfo" method="POST">
+	  <form  class="form-signup" action="/addTeamStat" method="POST">
         <input type="text" required class="form-control" placeholder="Team Id" name="team_id" value="{{
           request.form.team_id }}">
-		  <input type="text" required class="form-control" placeholder="Team Name" name="team_name" value="{{
+		<input type="text" required class="form-control" placeholder="Team Name" name="team_name" value="{{
           request.form.team_name }}">
-		<input type="text" required class="form-control" placeholder="Division" name="division_name" value="{{
-          request.form.division_name}}">
-
-        <input class="btn btn-lg btn-primary btn-block" type="submit" value="Add Player" id="btnSignin">
+		  
+		 <input type="text" required class="form-control" placeholder="Division Name" name="division_name" value="{{
+          request.form.division_name }}"> 
+		<input type="text" required class="form-control" placeholder="Points in total" name="team_points" value="{{
+          request.form.team_points }}">
+		 <input type="text" required class="form-control" placeholder="Rebounds in total" name="rebounds" value="{{
+          request.form.rebounds }}">
+		 <input type="text" required class="form-control" placeholder="Assists in total" name="assists" value="{{
+          request.form.assists }}">
+		  <input type="text" required class="form-control" placeholder="Steals in total" name="steals" value="{{
+          request.form.steals }}">		  
+        <input class="btn btn-lg btn-primary btn-block" type="submit" value="Add Team Statistics" id="btnSignin">
       </form>
       </div>
 	  
 	  
 	</body>
-
-</html>	
+</html>

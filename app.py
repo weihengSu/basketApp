@@ -195,22 +195,21 @@ def addPlayerInfo():
 		cur = conn.cursor()
 		playerId = request.form['player_id']
 		playerName = request.form['player_name']
-		playerIncome = request.form['player_income']
-		playerPosition = request.form['player_position']		
+		playerPosition = request.form['player_position']	
+		teamId = request.form['team_id']		
 		cur.execute("SELECT player_id FROM player_info;")		
 		result = cur.fetchall()
 		player_list = []
 		for i in result:
 			player_list.append(i[0])
 		if(playerId not in player_list):		
-			cur.execute("INSERT INTO player_info (player_id, player_name, player_income, player_position) VALUES (%s, %s, %s, %s)",(playerId, playerName, playerIncome, playerPosition))
+			cur.execute("INSERT INTO player_info (player_id, player_name, player_position, team_id) VALUES (%s, %s, %s, %s)",(playerId, playerName, playerPosition, teamId))
 			conn.commit()
 			return redirect(url_for('userHome'))
 		else: 
 			return render_template('error.html',error = 'Player already exists. Try to add another player.')
 		cur.close()
 		conn.close()
-			
 	else:
 		return render_template("userHome.html")
 
@@ -228,7 +227,7 @@ def viewPlayers():
 	try:
 		conn = psycopg2.connect(database="basketball", user="postgres", password="password")							 
 		cur = conn.cursor()
-		cur.execute("CREATE VIEW PLAYERS_VIEW AS SELECT player_id, player_name, player_income, player_position FROM	player_info;")
+		cur.execute("CREATE VIEW PLAYERS_VIEW AS SELECT player_id, player_name, player_position, team_id FROM player_info;")
 		cur.execute("SELECT * FROM PLAYERS_VIEW;")
 		players_data = cur.fetchall()
 		return render_template('view_playerInfo.html', players_data = players_data, user = session.get('user'))
@@ -263,9 +262,11 @@ def addPlayerStat():
 		cur = conn.cursor()
 		playerId = request.form['playerS_id']
 		playerName = request.form['playerS_name']
-		playerTwoPoints = request.form['player_twoPoints']
-		playerThreePoints = request.form['player_threePoints']		
-		cur.execute("SELECT playerStat_id FROM player_stat;")		
+		playerPoints = request.form['player_points']
+		rebounds = request.form['rebounds']
+		assists = request.form['rebounds']
+		steals = request.form['steals']
+		cur.execute("SELECT player_id FROM player_stat;")		
 		result = cur.fetchall()
 		player_list = []
 		for i in result:
@@ -277,7 +278,7 @@ def addPlayerStat():
 			playerI_list.append(i[0])
 		
 		if(playerId not in player_list and playerId in playerI_list):		
-			cur.execute("INSERT INTO player_stat (playerStat_id, playerStat_name, player_twoPoints, player_threePoints) VALUES (%s, %s, %s, %s)",(playerId, playerName, playerTwoPoints, playerThreePoints))
+			cur.execute("INSERT INTO player_stat (player_id, player_name, player_points, rebounds, assists, steals) VALUES (%s, %s, %s, %s, %s, %s)",(playerId, playerName, playerPoints, rebounds, assists, steals))
 			conn.commit()
 			return redirect(url_for('userHome'))
 		else: 
@@ -302,7 +303,7 @@ def viewPlayerStat():
 	try:
 		conn = psycopg2.connect(database="basketball", user="postgres", password="password")							 
 		cur = conn.cursor()
-		cur.execute("CREATE VIEW PLAYERSTAT_VIEW AS SELECT playerStat_id, playerStat_name, player_twoPoints, player_threePoints FROM player_stat;")
+		cur.execute("CREATE VIEW PLAYERSTAT_VIEW AS SELECT player_id, player_name, player_points, rebounds, assists, steals FROM player_stat;")
 		cur.execute("SELECT * FROM PLAYERSTAT_VIEW;")
 		players_data = cur.fetchall()
 		return render_template('view_playerStat.html', players_data = players_data, user = session.get('user'))
@@ -341,14 +342,14 @@ def addTeamInfo():
 		cur = conn.cursor()
 		teamId = request.form['team_id']
 		teamName = request.form['team_name']
-		conferenceId = request.form['conference_id']	
+		divisionName = request.form['division_name']	
 		cur.execute("SELECT team_id FROM team;")		
 		result = cur.fetchall()
 		team_list = []
 		for i in result:
 			team_list.append(i[0])
 		if(teamId not in team_list):		
-			cur.execute("INSERT INTO team (team_id, team_name, conference_id) VALUES (%s, %s, %s)",(teamId, teamName, conferenceId))
+			cur.execute("INSERT INTO team (team_id, team_name, division_name) VALUES (%s, %s, %s)",(teamId, teamName, divisionName))
 			conn.commit()
 			return redirect(url_for('userHome'))
 		else: 
@@ -373,7 +374,7 @@ def viewTeams():
 	try:
 		conn = psycopg2.connect(database="basketball", user="postgres", password="password")							 
 		cur = conn.cursor()
-		cur.execute("CREATE VIEW TEAM_VIEW AS SELECT team_id, team_name, conference_id FROM team;")
+		cur.execute("CREATE VIEW TEAM_VIEW AS SELECT team_id, team_name, division_name FROM team;")
 		cur.execute("SELECT * FROM TEAM_VIEW;")
 		teams_data = cur.fetchall()
 		return render_template('view_teamInfo.html', teams_data = teams_data, user = session.get('user'))
@@ -393,6 +394,95 @@ def viewTeams():
 		
 		
 		
+
+
+
+
+
+
+
+	
+@app.route('/showTeamStat')
+@nocache
+def showTeamStat():
+	return render_template('team_stat.html', user = session.get('user'))
+
+
+@app.route('/addTeamStat',methods=['GET','POST'])
+@nocache
+def addTeamStat():
+	if request.method == 'POST':
+		conn = psycopg2.connect(database="basketball", user="postgres", password="password")							 
+		cur = conn.cursor()
+		teamId = request.form['team_id']
+		teamName = request.form['team_name']
+		divisionName = request.form['division_name']
+		teamPoints = request.form['team_points']
+		rebounds = request.form['rebounds']
+		assists = request.form['assists']
+		steals = request.form['steals']			
+		cur.execute("SELECT team_id FROM team_stat;")		
+		result = cur.fetchall()
+		team_list = []
+		for i in result:
+			team_list.append(i[0])
+		cur.execute("SELECT team_id FROM team;")
+		resultI = cur.fetchall()
+		teamI_list = []
+		for i in resultI:
+			teamI_list.append(i[0])
+		
+		if(teamId not in team_list and teamId in teamI_list):		
+			cur.execute("INSERT INTO team_stat (team_id, team_name, division_name, team_points, rebounds, assists, steals) VALUES (%s, %s, %s, %s, %s, %s, %s)",(teamId, teamName, divisionName, teamPoints, rebounds, assists, steals))
+			conn.commit()
+			return redirect(url_for('userHome'))
+		else: 
+			return render_template('error.html',error = 'Team statistics information already exists or Team has not been added. Try to add another player.')
+		cur.close()
+		conn.close()
+			
+	else:
+		return render_template("userHome.html")
+
+@app.route('/showViewTeamStat')
+@nocache
+def showViewTeamStat():
+	return redirect(url_for('viewTeamStat'))
+
+					
+	
+@app.route('/viewTeamStat')
+@nocache
+@login_required
+def viewTeamStat():
+	try:
+		conn = psycopg2.connect(database="basketball", user="postgres", password="password")							 
+		cur = conn.cursor()
+		cur.execute("CREATE VIEW TEAMSTAT_VIEW AS SELECT team_id, team_name, division_name, team_points, rebounds, assists, steals FROM team_stat;")
+		cur.execute("SELECT * FROM TEAMSTAT_VIEW;")
+		teams_data = cur.fetchall()
+		return render_template('view_teamStat.html', teams_data = teams_data, user = session.get('user'))
+	except Exception as e:
+		return render_template('error.html', error = str(e))	
+	finally:
+		cur.close()
+		conn.close()	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 		
 		
 		
