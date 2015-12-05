@@ -471,6 +471,85 @@ def viewTeamStat():
 
 
 
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+@app.route('/showPlayerInjury')
+@nocache
+def showPlayerInjury():
+	return render_template('player_injury.html', user = session.get('user'))
+
+
+@app.route('/addPlayerInjury',methods=['GET','POST'])
+@nocache
+def addPlayerInjury():
+	if request.method == 'POST':
+		conn = psycopg2.connect(database="basketball", user="postgres", password="password")							 
+		cur = conn.cursor()
+		playerId = request.form['player_id']
+		playerName = request.form['player_name']
+		injuryName = request.form['injury_name']		
+		cur.execute("SELECT player_id FROM player_injury;")		
+		result = cur.fetchall()
+		players_list = []
+		for i in result:
+			players_list.append(i[0])
+		cur.execute("SELECT player_id FROM player_info;")
+		resultI = cur.fetchall()
+		playerI_list = []
+		for i in resultI:
+			playerI_list.append(i[0])
+		
+		if(playerId not in players_list and playerId in playerI_list):		
+			cur.execute("INSERT INTO player_injury (player_id, player_name, injury_name) VALUES (%s, %s, %s)",(playerId, playerName, injuryName))
+			conn.commit()
+			return redirect(url_for('userHome'))
+		else: 
+			return render_template('error.html',error = 'Player Injury information already exists or Team has not been added. Try to add another player.')
+		cur.close()
+		conn.close()
+			
+	else:
+		return render_template("userHome.html")
+
+@app.route('/showViewPlayerInjury')
+@nocache
+def showViewPlayerInjury():
+	return redirect(url_for('viewPlayerInjury'))
+
+					
+	
+@app.route('/viewPlayerInjury')
+@nocache
+@login_required
+def viewPlayerInjury():
+	try:
+		conn = psycopg2.connect(database="basketball", user="postgres", password="password")							 
+		cur = conn.cursor()
+		cur.execute("CREATE VIEW PLAYERINJURY_VIEW AS SELECT player_id, player_name, injury_name FROM player_injury;")
+		cur.execute("SELECT * FROM PLAYERINJURY_VIEW;")
+		players_data = cur.fetchall()
+		return render_template('view_playerInjury.html', players_data = players_data, user = session.get('user'))
+	except Exception as e:
+		return render_template('error.html', error = str(e))	
+	finally:
+		cur.close()
+		conn.close()	
+
+		
 
 
 

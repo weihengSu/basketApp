@@ -34,22 +34,19 @@
  
  
         <div class="jumbotron">
-            <h1>Players Information</h1>
+            <h1>Player Injury Information</h1>
 			
  
         </div>
         <div class="panel panel-primary">
         <!-- Default panel contents -->
         <div class="panel-heading"><h4>Players</h4></div>
-        <table class="table table-striped" action="/viewPlayers">
+        <table class="table table-striped" action="/viewPlayerInjury">
             <thead>
             <tr>
                 <th><h5>Player Id</h5></th>
                 <th><h5>Player name</h5></th>
-				<th><h5>Points(average)</h5></th>
-				<th><h5>Rebounds(average)</h5></th>
-				<th><h5>Assists(average)</h5></th>
-				<th><h5>Steals(average)</h5></th>
+				<th><h5>Injury</h5></th>
 
             </tr>
             </thead>
@@ -59,9 +56,7 @@
                     <td>{{player[0]}}</td>
                     <td>{{player[1]}}</td>
 					<td>{{player[2]}}</td>
-                    <td>{{player[3]}}</td>
-					<td>{{player[4]}}</td>
-					<td>{{player[5]}}</td>
+  
        
 
                 </tr>
