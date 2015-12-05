@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Basketball Database App</title>
+ 
+    
+    <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+ 
+    <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
+   
+	<!-- script src="../static/js/jquery-2.1.4.min.js"></script>
+	<script src="../static/js/signUp.js"></script -->
+	
+    
+  </head>
+ 
+  <body>
+ 
+      <div class="container">
+        <div class="header">
+		  
+            <nav>
+                <ul class="nav nav-pills pull-right">
+				    <li style="color:blue;"><b>Logged in: {{user}}</b></li> 
+				    <li><a href="/showViewUser"> View Users(Admin Only)</a></li> 
+                    <li role="presentation" class="active"><a href="/">Logout</a>
+                    </li>
+                </ul>
+            </nav>
+            <h3 class="text-muted">Basketball App</h3>
+        </div>
+  
+ 
+ 
+        <div class="jumbotron">
+            <h1><a href="/showViewDivision">Click here to view Divisions</a></h1>
+			
+ 
+        </div>
+ 
+      <div class="jumbotron">
+        <h1>Add Divisions</h1>
+  
+	  <form  class="form-signup" action="/addDivision" method="POST">
+        <input type="text" required class="form-control" placeholder="Division Id" name="division_id" value="{{
+          request.form.division_id }}">
+		<input type="text" required class="form-control" placeholder="Division" name="division_name" value="{{
+          request.form.division_name}}">
+
+        <input class="btn btn-lg btn-primary btn-block" type="submit" value="Add Player" id="btnSignin">
+      </form>
+      </div>
+	  
+	  
+	</body>
+
+</html>	

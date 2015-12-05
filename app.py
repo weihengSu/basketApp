@@ -637,6 +637,159 @@ def viewCoach():
 
 
 
+		
+		
+		
+		
+		
+		
+		
+
+
+
+	
+@app.route('/showDivison')
+@nocache
+def showDivision():
+	return render_template('division.html', user = session.get('user'))
+
+
+@app.route('/addDivision',methods=['GET','POST'])
+@nocache
+def addDivision():
+	if request.method == 'POST':
+		conn = psycopg2.connect(database="basketball", user="postgres", password="password")							 
+		cur = conn.cursor()
+		divisionId = request.form['division_id']
+		divisionName = request.form['division_name']
+		cur.execute("SELECT division_id FROM division;")		
+		result = cur.fetchall()
+		division_list = []
+		for i in result:
+			division_list.append(i[0])
+		if(divisionId not in division_list):		
+			cur.execute("INSERT INTO division (division_id, division_name) VALUES (%s, %s)",(divisionId, divisionName))
+			conn.commit()
+			return redirect(url_for('userHome'))
+		else: 
+			return render_template('error.html',error = 'Division already exists. Try to add another division.')
+		cur.close()
+		conn.close()
+			
+	else:
+		return render_template("userHome.html")
+
+@app.route('/showViewDivision')
+@nocache
+def showViewDivision():
+	return redirect(url_for('viewDivision'))
+
+					
+	
+@app.route('/viewDivision')
+@nocache
+@login_required
+def viewDivision():
+	try:
+		conn = psycopg2.connect(database="basketball", user="postgres", password="password")							 
+		cur = conn.cursor()
+		cur.execute("CREATE VIEW DIVISION_VIEW AS SELECT division_id, division_name FROM division;")
+		cur.execute("SELECT * FROM DIVISION_VIEW;")
+		divisions_data = cur.fetchall()
+		return render_template('view_division.html', divisions_data = divisions_data, user = session.get('user'))
+	except Exception as e:
+		return render_template('error.html', error = str(e))	
+	finally:
+		cur.close()
+		conn.close()	
+		
+		
+		
+		
+		
+		
+
+
+
+
+
+
+
+
+
+
+
+
+	
+@app.route('/showAttendance')
+@nocache
+def showAttendance():
+	return render_template('attendance.html', user = session.get('user'))
+
+
+@app.route('/addAttendance',methods=['GET','POST'])
+@nocache
+def addAttendance():
+	if request.method == 'POST':
+		conn = psycopg2.connect(database="basketball", user="postgres", password="password")							 
+		cur = conn.cursor()
+		divisionId = request.form['division_id']
+		divisionName = request.form['division_name']
+		numOfAttendee = request.form['number_of_attendee']		
+		cur.execute("SELECT division_id FROM attendance;")		
+		result = cur.fetchall()
+		division_list = []
+		for i in result:
+			division_list.append(i[0])
+		cur.execute("SELECT division_id FROM division;")
+		resultI = cur.fetchall()
+		divisionI_list = []
+		for i in resultI:
+			divisionI_list.append(i[0])
+		
+		if(divisionId not in division_list and divisionId in divisionI_list):		
+			cur.execute("INSERT INTO attendance (division_id, division_name, number_of_attendee) VALUES (%s, %s, %s)",(divisionId, divisionName, numOfAttendee))
+			conn.commit()
+			return redirect(url_for('userHome'))
+		else: 
+			return render_template('error.html',error = 'Attendance information already exists or division has not been added. Try to add a division or the attendance information of an existing team.')
+		cur.close()
+		conn.close()
+			
+	else:
+		return render_template("userHome.html")
+
+@app.route('/showViewAttendance')
+@nocache
+def showViewAttendance():
+	return redirect(url_for('viewAttendance'))
+
+					
+	
+@app.route('/viewAttendance')
+@nocache
+@login_required
+def viewAttendance():
+	try:
+		conn = psycopg2.connect(database="basketball", user="postgres", password="password")							 
+		cur = conn.cursor()
+		cur.execute("CREATE VIEW Attendance_VIEW AS SELECT division_id, division_name, number_of_attendee FROM attendance;")
+		cur.execute("SELECT * FROM Attendance_VIEW;")
+		attendance_data = cur.fetchall()
+		return render_template('view_attendance.html', attendance_data = attendance_data, user = session.get('user'))
+	except Exception as e:
+		return render_template('error.html', error = str(e))	
+	finally:
+		cur.close()
+		conn.close()	
+		
+		
+
+
+
+
+
+
 
 
 
