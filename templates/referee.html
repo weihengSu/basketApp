@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Basketball Database App</title>
+ 
+    
+    <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+ 
+    <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
+   
+	<!-- script src="../static/js/jquery-2.1.4.min.js"></script>
+	<script src="../static/js/signUp.js"></script -->
+	
+    
+  </head>
+ 
+  <body>
+ 
+      <div class="container">
+        <div class="header">
+		  
+            <nav>
+                <ul class="nav nav-pills pull-right">
+				    <li style="color:blue;"><b>Logged in: {{user}}</b></li> 
+				    <li><a href="/showViewUser"> View Users(Admin Only)</a></li> 
+                    <li role="presentation" class="active"><a href="/">Logout</a>
+                    </li>
+                </ul>
+            </nav>
+            <h3 class="text-muted">Basketball App</h3>
+        </div>
+  
+ 
+ 
+        <div class="jumbotron">
+            <h1><a href="/viewReferee">Click here to view Referee information</a></h1>
+			
+ 
+        </div>
+ 
+      <div class="jumbotron">
+        <h1>Add Referee Information</h1>
+        <!--form class="form-signup" action="/showSignUp" method="POST">
+        <label for="inputName" class="sr-only">Name</label>
+        <input type="name" name="inputName" id="inputName" class="form-control" placeholder="Name" required autofocus>
+        <label for="inputEmail" class="sr-only">Email address</label>
+        <input type="email" name="inputEmail" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input type="password" name="inputPassword" id="inputPassword" class="form-control" placeholder="Password" required>
+         
+        <button id="btnSignUp" class="btn btn-lg btn-primary btn-block" type="button" >Sign up</button>
+      </form -->
+	  <form  class="form-signup" action="/addReferee" method="POST">
+        <input type="text" required class="form-control" placeholder="Division Id" name="division_id" value="{{
+          request.form.division_id }}">
+		  <input type="text" required class="form-control" placeholder="Division Name" name="division_name" value="{{
+          request.form.division_name }}">
+		<input type="text" required class="form-control" placeholder="Referee Id" name="referee_id" value="{{
+          request.form.referee_id }}">
+		<input type="text" required class="form-control" placeholder="Referee Name" name="referee_name" value="{{
+          request.form.referee_name }}">
+		
+        <input class="btn btn-lg btn-primary btn-block" type="submit" value="Add Referee" id="btnSignin">
+      </form>
+      </div>
+	  
+	  
+	</body>
+</html>

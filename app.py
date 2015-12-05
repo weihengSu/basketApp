@@ -648,7 +648,7 @@ def viewCoach():
 
 
 	
-@app.route('/showDivison')
+@app.route('/showDivision')
 @nocache
 def showDivision():
 	return render_template('division.html', user = session.get('user'))
@@ -789,6 +789,76 @@ def viewAttendance():
 
 
 
+
+
+
+
+
+	
+@app.route('/showReferee')
+@nocache
+def showReferee():
+	return render_template('referee.html', user = session.get('user'))
+
+
+@app.route('/addReferee',methods=['GET','POST'])
+@nocache
+def addReferee():
+	if request.method == 'POST':
+		conn = psycopg2.connect(database="basketball", user="postgres", password="password")							 
+		cur = conn.cursor()
+		divisionId = request.form['division_id']
+		divisionName = request.form['division_name']
+		refereeId = request.form['referee_id']
+		refereeName = request.form['referee_name']		
+		cur.execute("SELECT division_id FROM referee;")		
+		result = cur.fetchall()
+		division_list = []
+		for i in result:
+			division_list.append(i[0])
+		cur.execute("SELECT division_id FROM division;")
+		resultI = cur.fetchall()
+		divisionI_list = []
+		for i in resultI:
+			divisionI_list.append(i[0])
+		
+		if(divisionId not in division_list and divisionId in divisionI_list):		
+			cur.execute("INSERT INTO referee (division_id, division_name, referee_id, referee_name) VALUES (%s, %s, %s, %s)",(divisionId, divisionName, refereeId, refereeName))
+			conn.commit()
+			return redirect(url_for('userHome'))
+		else: 
+			return render_template('error.html',error = 'Referee information already exists or division has not been added. Try to add a division or the referee information of an existing team.')
+		cur.close()
+		conn.close()
+			
+	else:
+		return render_template("userHome.html")
+
+@app.route('/showViewReferee')
+@nocache
+def showViewReferee():
+	return redirect(url_for('viewReferee'))
+
+					
+	
+@app.route('/viewReferee')
+@nocache
+@login_required
+def viewReferee():
+	try:
+		conn = psycopg2.connect(database="basketball", user="postgres", password="password")							 
+		cur = conn.cursor()
+		cur.execute("CREATE VIEW referee_VIEW AS SELECT division_id, division_name, referee_id, referee_name FROM referee;")
+		cur.execute("SELECT * FROM referee_VIEW;")
+		referee_data = cur.fetchall()
+		return render_template('view_referee.html', referee_data = referee_data, user = session.get('user'))
+	except Exception as e:
+		return render_template('error.html', error = str(e))	
+	finally:
+		cur.close()
+		conn.close()	
+		
+		
 
 
 
