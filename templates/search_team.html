@@ -37,42 +37,42 @@
       <div class="jumbotron">
       
 
-	  <form  class="form-signup" action="/addSearchPlayer" method="POST">
-        <input type="text" required class="form-control" placeholder="Search player name" name="player_name" value="{{
-          request.form.player_name }}">
+	  <form  class="form-signup" action="/addSearchTeam" method="POST">
+        <input type="text" required class="form-control" placeholder="Search Team name" name="team_name" value="{{
+          request.form.team_name }}">
 
         <input class="btn btn-lg btn-primary btn-block" type="submit" value="Search" id="btnSignin">
       </form>
       </div>
 	  
 	   <div class="panel panel-primary">
-	       <div class="panel-heading"><h4>Players</h4></div>
+	       <div class="panel-heading"><h4>Teams</h4></div>
         <!--table class="table table-striped" action="/viewSearchPlayer" -->
 		<table class="table table-striped">
             <thead>
             <tr>   
-			    <th><h5>Player Name</h5></th>
-                <th><h5>Team Name</h5></th>
-				<th><h5>Player Id</h5></th>
-				<th><h5>Player Position</h5></th>
-				<th><h5>Points in average</h5></th>
-                <th><h5>Rebounds in average</h5></th>
-				<th><h5>Assists in average</h5></th>
-				<th><h5>Steals in average</h5></th>
+			    <th><h5>Team Name</h5></th>
+                <th><h5>Team Id</h5></th>
+				<th><h5>Division</h5></th>
+				<th><h5>Head Coach</h5></th>
+				<th><h5>Points in total</h5></th>
+                <th><h5>Rebounds in total</h5></th>
+				<th><h5>Assists in total</h5></th>
+				<th><h5>Steals in total</h5></th>
 
             </tr>
             </thead>
             <tbody>
-            {% for player in search_data %}
+            {% for team in search_data %}
                 <tr>
-                    <td>{{player[0]}}</td>
-                    <td>{{player[1]}}</td>
-					<td>{{player[2]}}</td>
-                    <td>{{player[3]}}</td>
-				    <td>{{player[4]}}</td>
-                    <td>{{player[5]}}</td>
-					<td>{{player[6]}}</td>
-                    <td>{{player[7]}}</td>
+                    <td>{{team[0]}}</td>
+                    <td>{{team[1]}}</td>
+					<td>{{team[2]}}</td>
+                    <td>{{team[3]}}</td>
+				    <td>{{team[4]}}</td>
+                    <td>{{team[5]}}</td>
+					<td>{{team[6]}}</td>
+                    <td>{{team[7]}}</td>
 
                 </tr>
             {% endfor %}

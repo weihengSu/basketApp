@@ -985,7 +985,7 @@ def addSearchPlayer():
 			search_data = cur.fetchall()
 			return render_template('search_player.html', search_data = search_data, user = session.get('user'))
 		else: 
-			return render_template('error.html',error = 'No name was found. please go back and try again.')
+			return render_template('error.html',error = 'No player was found. please try again.')
 		cur.close()
 		conn.close()
 			
@@ -994,7 +994,44 @@ def addSearchPlayer():
 
 
 
-					
+		
+		
+		
+		
+		
+		
+		
+		
+@app.route('/showSearchTeam')
+@nocache
+def showSearchTeam():
+	return render_template('search_team.html', user = session.get('user'))
+
+@app.route('/addSearchTeam',methods=['GET','POST'])
+@nocache
+def addSearchTeam():
+	if request.method == 'POST':
+		conn = psycopg2.connect(database="basketball", user="postgres", password="password")							 
+		cur = conn.cursor()
+		teamName = request.form['team_name']		
+		cur.execute("SELECT team_name FROM team where team_name LIKE %(id)s", {'id': '%'+ teamName +'%'})		
+		resultI = cur.fetchall()
+		teamI_list = []
+		for i in resultI:
+			teamI_list.append(i[0])
+		if(len(teamI_list) > 0):	
+			cur.execute("SELECT team.team_name, team.team_id, team.division_name,coach_name, team_points, rebounds, assists, steals from team full join team_stat on team.team_name = team_stat.team_name full join team_coach on team.team_name = team_coach.team_name where team.team_name LIKE %(id)s", {'id': '%'+ teamName +'%'})
+			search_data = cur.fetchall()
+			return render_template('search_team.html', search_data = search_data, user = session.get('user'))
+		else: 
+			return render_template('error.html',error = 'No team was found. please try again.')
+		cur.close()
+		conn.close()
+			
+	else:
+		return render_template("userHome.html")
+
+				
 	
 
 
