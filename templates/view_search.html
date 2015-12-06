@@ -41,28 +41,31 @@
         <div class="panel panel-primary">
         <!-- Default panel contents -->
         <div class="panel-heading"><h4>Players</h4></div>
-        <table class="table table-striped" action="/viewPlayers">
+        <table class="table table-striped" action="/viewSearchPlayer">
             <thead>
-            <tr>
-                <th><h5>Player Id</h5></th>
-                <th><h5>Player name</h5></th>
-				<th><h5>Points(average)</h5></th>
-				<th><h5>Rebounds(average)</h5></th>
-				<th><h5>Assists(average)</h5></th>
-				<th><h5>Steals(average)</h5></th>
+            <tr> 
+                <th><h5>Team Name</h5></th>
+                <th><h5>Player Name</h5></th>
+				<th><h5>Player Id</h5></th>
+				<th><h5>Player Position</h5></th>
+				<th><h5>Points in average</h5></th>
+                <th><h5>Rebounds in average</h5></th>
+				<th><h5>Assists in average</h5></th>
+				<th><h5>Steals in average</h5></th>
 
             </tr>
             </thead>
             <tbody>
-            {% for player in players_data %}
+            {% for player in search_data %}
                 <tr>
                     <td>{{player[0]}}</td>
                     <td>{{player[1]}}</td>
 					<td>{{player[2]}}</td>
                     <td>{{player[3]}}</td>
-					<td>{{player[4]}}</td>
-					<td>{{player[5]}}</td>
-       
+				    <td>{{player[4]}}</td>
+                    <td>{{player[5]}}</td>
+					<td>{{player[6]}}</td>
+                    <td>{{player[7]}}</td>
 
                 </tr>
             {% endfor %}
@@ -73,10 +76,17 @@
 	
     </div>
 	 
+
 	 
-	 </div>
+	 
+	 
+	 
+ 
+ 
+	
+   </div>
   
      
 </body>
-</html>
  
+</html>
