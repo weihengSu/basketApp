@@ -981,16 +981,9 @@ def addSearchPlayer():
 		for i in resultI:
 			playerI_list.append(i[0])
 		if(len(playerI_list) > 0):	
-			for j in playerI_list:
-				cur.execute("SELECT player_info.player_name, team_name, player_points, rebounds, assists, steals, player_info.player_id, player_position from player_info full join player_stat on player_info.player_name = player_stat.player_name where player_info.player_name = %(id)s", {'id': j})
-				resultII = cur.fetchall()
-		
-				for k in resultII:
-					#playerII_list.append(i)
-					cur.execute("INSERT INTO search_player(player_name, team_name, player_points, rebounds, assists, steals, player_id, player_position) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",(k[0],k[1],k[2],k[3],k[4],k[5],k[6], k[7]))	
-					conn.commit()
-					
-			return redirect(url_for('showViewSearchPlayer'))
+			cur.execute("SELECT player_info.player_name, team_name, player_info.player_id, player_position, player_points, rebounds, assists, steals from player_info full join player_stat on player_info.player_name = player_stat.player_name where player_info.player_name LIKE %(id)s", {'id': '%'+ playerName +'%'})
+			search_data = cur.fetchall()
+			return render_template('search_player.html', search_data = search_data, user = session.get('user'))
 		else: 
 			return render_template('error.html',error = 'No name was found. please go back and try again.')
 		cur.close()
@@ -999,32 +992,11 @@ def addSearchPlayer():
 	else:
 		return render_template("userHome.html")
 
-@app.route('/showViewSearchPlayer')
-@nocache
-def showViewSearchPlayer():
-	return redirect(url_for('viewSearchPlayer'))
+
 
 					
 	
-@app.route('/viewSearchPlayer')
-@nocache
-@login_required
-def viewSearchPlayer():
-	try:
-		conn = psycopg2.connect(database="basketball", user="postgres", password="password")							 
-		cur = conn.cursor()
-		cur.execute("SELECT team_name, player_name, player_id, player_position, player_points, rebounds, assists, steals from search_player;")
-		#cur.execute("SELECT * FROM searchplayer_VIEW;")
-		search_data = cur.fetchall()
-		#cur.execute("DELETE FROM searchplayer_VIEW;")
-		return render_template('view_search.html', search_data = search_data, user = session.get('user'))
-	except Exception as e:
-		return render_template('error.html', error = str(e))	
-	cur.execute("delete from search_player;")
-	conn.commit()
-	cur.close()
-	conn.close()			
-		
+
 
 
 				

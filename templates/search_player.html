@@ -46,6 +46,51 @@
       </div>
 	  
 	  
+	       <div class="panel-heading"><h4>Players</h4></div>
+        <!--table class="table table-striped" action="/viewSearchPlayer" -->
+		<table class="table table-striped">
+            <thead>
+            <tr>   
+			    <th><h5>Player Name</h5></th>
+                <th><h5>Team Name</h5></th>
+				<th><h5>Player Id</h5></th>
+				<th><h5>Player Position</h5></th>
+				<th><h5>Points in average</h5></th>
+                <th><h5>Rebounds in average</h5></th>
+				<th><h5>Assists in average</h5></th>
+				<th><h5>Steals in average</h5></th>
+
+            </tr>
+            </thead>
+            <tbody>
+            {% for player in search_data %}
+                <tr>
+                    <td>{{player[0]}}</td>
+                    <td>{{player[1]}}</td>
+					<td>{{player[2]}}</td>
+                    <td>{{player[3]}}</td>
+				    <td>{{player[4]}}</td>
+                    <td>{{player[5]}}</td>
+					<td>{{player[6]}}</td>
+                    <td>{{player[7]}}</td>
+
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+		
+		
+	
+    </div>
+	 
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
 	</body>
 
 </html>	
