@@ -953,7 +953,7 @@ def deleteDivision():
 			conn.commit()
 			return render_template("division.html")	
 		elif (divisionId in division_list and divisionId in divisionII_list):	
-			return render_template('error.html',error = "Please delete the entry in division table first and then delete the division information from this table. ") 
+			return render_template('error.html',error = "Please delete the entry in referee table first and then delete the division information from this table. ") 
 		elif (divisionId in division_list and divisionId in divisionI_list):	
 			return render_template('error.html',error = "Please delete the entry in attendance table first and then delete the division information from this table. ") 
 		else: 
