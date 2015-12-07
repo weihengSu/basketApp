@@ -821,9 +821,39 @@ def viewCoach():
 		
 		
 		
-
-
-
+		
+@app.route('/deleteCoach',methods=['GET','POST'])
+@nocache
+def deleteCoach():
+	if request.method == 'POST':
+		conn = psycopg2.connect(database="basketball", user="postgres", password="password")							 
+		cur = conn.cursor()
+		coachId = request.form['team_id']		
+		cur.execute("SELECT team_id FROM team_coach;")		
+		result = cur.fetchall()
+		coach_list = []
+		for i in result:
+			coach_list.append(i[0])
+		if(coachId in coach_list):		
+			cur.execute("DELETE from team_coach where team_id = %(id)s",{'id': coachId})
+			conn.commit()
+			return render_template("team_coach.html")	
+		else: 
+			return render_template('error.html',error = "No coach information for this team. ")
+		cur.close()
+		conn.close()
+	else:
+		return render_template("view_coach.html")				
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 
 
 		
@@ -1023,6 +1053,43 @@ def viewAttendance():
 
 
 
+		
+@app.route('/deleteAttendance',methods=['GET','POST'])
+@nocache
+def deleteAttendance():
+	if request.method == 'POST':
+		conn = psycopg2.connect(database="basketball", user="postgres", password="password")							 
+		cur = conn.cursor()
+		attendanceId = request.form['division_id']		
+		cur.execute("SELECT division_id FROM attendance;")		
+		result = cur.fetchall()
+		attendance_list = []
+		for i in result:
+			attendance_list.append(i[0])
+		if(attendanceId in attendance_list):		
+			cur.execute("DELETE from attendance where division_id = %(id)s",{'id': attendanceId})
+			conn.commit()
+			return render_template("attendance.html")	
+		else: 
+			return render_template('error.html',error = "No attendance information for this division. ")
+		cur.close()
+		conn.close()
+	else:
+		return render_template("view_attendance.html")			
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 
 
 
@@ -1096,6 +1163,34 @@ def viewReferee():
 		
 
 
+@app.route('/deleteReferee',methods=['GET','POST'])
+@nocache
+def deleteReferee():
+	if request.method == 'POST':
+		conn = psycopg2.connect(database="basketball", user="postgres", password="password")							 
+		cur = conn.cursor()
+		refereeId = request.form['referee_id']		
+		cur.execute("SELECT referee_id FROM referee;")		
+		result = cur.fetchall()
+		referee_list = []
+		for i in result:
+			referee_list.append(i[0])
+		if(refereeId in referee_list):		
+			cur.execute("DELETE from referee where referee_id = %(id)s",{'id': refereeId})
+			conn.commit()
+			return render_template("referee.html")	
+		else: 
+			return render_template('error.html',error = "No referee information for this referee. ")
+		cur.close()
+		conn.close()
+	else:
+		return render_template("view_referee.html")			
+				
+		
+		
+		
+		
+		
 		
 		
 		
@@ -1178,7 +1273,28 @@ def viewChampion():
 		
 		
 		
-
+@app.route('/deleteChampion',methods=['GET','POST'])
+@nocache
+def deleteChampion():
+	if request.method == 'POST':
+		conn = psycopg2.connect(database="basketball", user="postgres", password="password")							 
+		cur = conn.cursor()
+		champId = request.form['division_id']		
+		cur.execute("SELECT division_id FROM champions;")		
+		result = cur.fetchall()
+		champ_list = []
+		for i in result:
+			champ_list.append(i[0])
+		if(champId in champ_list):		
+			cur.execute("DELETE from champions where division_id = %(id)s",{'id': champId})
+			conn.commit()
+			return render_template("champions.html")	
+		else: 
+			return render_template('error.html',error = "No information of this division. ")
+		cur.close()
+		conn.close()
+	else:
+		return render_template("view_champion.html")		
 
 		
 		
