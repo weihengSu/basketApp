@@ -38,6 +38,26 @@
 			
  
         </div>
+		
+		
+		
+		  <div class="jumbotron">
+      
+
+	  <form  class="form-signup" action="/deleteDivision" method="POST">
+        <input type="text" required class="form-control" placeholder="Please enter a division's id to delete the division" name="division_id" value="{{
+          request.form.division_id }}">
+
+        <input class="btn btn-lg btn-primary btn-block" type="submit" value="Delete" id="btnSignin">
+      </form>
+      </div>
+	  
+		
+		
+		
+		
+		
+		
         <div class="panel panel-primary">
         <!-- Default panel contents -->
         <div class="panel-heading"><h4>Divisions</h4></div>

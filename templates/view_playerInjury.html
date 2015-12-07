@@ -33,11 +33,36 @@
  
  
  
-        <div class="jumbotron">
+       
+
+
+	   <div class="jumbotron">
             <h1>Player Injury Information</h1>
 			
  
         </div>
+		
+		
+      <div class="jumbotron">
+      
+
+	  <form  class="form-signup" action="/deletePlayerInjury" method="POST">
+        <input type="text" required class="form-control" placeholder="Please enter a player's id to delete the player injury" name="player_id" value="{{
+          request.form.player_id }}">
+
+        <input class="btn btn-lg btn-primary btn-block" type="submit" value="Delete" id="btnSignin">
+      </form>
+      </div>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
         <div class="panel panel-primary">
         <!-- Default panel contents -->
         <div class="panel-heading"><h4>Players</h4></div>

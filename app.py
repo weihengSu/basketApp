@@ -238,6 +238,60 @@ def viewPlayers():
 		conn.close()	
 
 
+		
+		
+		
+@app.route('/deletePlayer',methods=['GET','POST'])
+@nocache
+def deletePlayer():
+	if request.method == 'POST':
+		conn = psycopg2.connect(database="basketball", user="postgres", password="password")							 
+		cur = conn.cursor()
+		playerId = request.form['player_id']		
+		cur.execute("SELECT player_id FROM player_info;")		
+		result = cur.fetchall()
+		player_list = []
+		for i in result:
+			player_list.append(i[0])
+		cur.execute("SELECT player_id FROM player_stat;")		
+		resultI = cur.fetchall()
+		playerI_list = []
+		for i in resultI:
+			playerI_list.append(i[0])
+		cur.execute("SELECT player_id FROM player_injury;")		
+		resultII = cur.fetchall()
+		playerII_list = []
+		for i in resultII:
+			playerII_list.append(i[0])
+		
+		if(playerId in player_list and playerId not in playerI_list and playerId not in playerII_list):		
+			cur.execute("DELETE from player_info where player_id = %(id)s",{'id': playerId})
+			conn.commit()
+			return render_template("player_info.html")	
+		elif (playerId in player_list and playerId in playerII_list):	
+			return render_template('error.html',error = "Please delete player's injury first and then delete from this table. ") 
+		elif (playerId in player_list and playerId in playerI_list):	
+			return render_template('error.html',error = "Please delete player's statistics first and then delete from this table. ") 
+		else: 
+			return render_template('error.html',error = "Player does not exist ")
+		cur.close()
+		conn.close()
+	else:
+		return render_template("view_playerInfo.html")		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 
 
 		
@@ -315,6 +369,40 @@ def viewPlayerStat():
 
 
 
+		
+		
+@app.route('/deletePlayerStat',methods=['GET','POST'])
+@nocache
+def deletePlayerStat():
+	if request.method == 'POST':
+		conn = psycopg2.connect(database="basketball", user="postgres", password="password")							 
+		cur = conn.cursor()
+		playerId = request.form['player_id']		
+		cur.execute("SELECT player_id FROM player_stat;")		
+		result = cur.fetchall()
+		player_list = []
+		for i in result:
+			player_list.append(i[0])
+		if(playerId in player_list):		
+			cur.execute("DELETE from player_stat where player_id = %(id)s",{'id': playerId})
+			conn.commit()
+			return render_template("player_stat.html")	
+		else: 
+			return render_template('error.html',error = "No statistics information for this player. ")
+		cur.close()
+		conn.close()
+	else:
+		return render_template("view_playerStat.html")				
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 
 		
 		
@@ -384,6 +472,54 @@ def viewTeams():
 		cur.close()
 		conn.close()			
 		
+
+
+@app.route('/deleteTeam',methods=['GET','POST'])
+@nocache
+def deleteTeam():
+	if request.method == 'POST':
+		conn = psycopg2.connect(database="basketball", user="postgres", password="password")							 
+		cur = conn.cursor()
+		teamId = request.form['team_id']		
+		cur.execute("SELECT team_id FROM team;")		
+		result = cur.fetchall()
+		team_list = []
+		for i in result:
+			team_list.append(i[0])
+		cur.execute("SELECT team_id FROM team_stat;")		
+		resultI = cur.fetchall()
+		teamI_list = []
+		for i in resultI:
+			teamI_list.append(i[0])
+		cur.execute("SELECT team_id FROM team_coach;")		
+		resultII = cur.fetchall()
+		teamII_list = []
+		for i in resultII:
+			teamII_list.append(i[0])
+		
+		if(teamId in team_list and teamId not in teamI_list and teamId not in teamII_list):		
+			cur.execute("DELETE from team where team_id = %(id)s",{'id': teamId})
+			conn.commit()
+			return render_template("team_info.html")	
+		elif (teamId in team_list and teamId in teamII_list):	
+			return render_template('error.html',error = "Please delete the entry in coach table first and then delete the team from this table. ") 
+		elif (teamId in team_list and teamId in teamI_list):	
+			return render_template('error.html',error = "Please delete the team's statistics first and then delete the team from this table. ") 
+		else: 
+			return render_template('error.html',error = "Team does not exist ")
+		cur.close()
+		conn.close()
+	else:
+		return render_template("view_playerInfo.html")		
+		
+
+
+
+
+
+
+
+
 		
 		
 		
@@ -471,7 +607,28 @@ def viewTeamStat():
 
 
 
-		
+@app.route('/deleteTeamStat',methods=['GET','POST'])
+@nocache
+def deleteTeamStat():
+	if request.method == 'POST':
+		conn = psycopg2.connect(database="basketball", user="postgres", password="password")							 
+		cur = conn.cursor()
+		teamId = request.form['team_id']		
+		cur.execute("SELECT team_id FROM team_stat;")		
+		result = cur.fetchall()
+		team_list = []
+		for i in result:
+			team_list.append(i[0])
+		if(teamId in team_list):		
+			cur.execute("DELETE from team_stat where team_id = %(id)s",{'id': teamId})
+			conn.commit()
+			return render_template("team_stat.html")	
+		else: 
+			return render_template('error.html',error = "No statistics information for this team. ")
+		cur.close()
+		conn.close()
+	else:
+		return render_template("view_teamStat.html")			
 
 
 
@@ -551,6 +708,38 @@ def viewPlayerInjury():
 
 		
 
+		
+		
+@app.route('/deletePlayerInjury',methods=['GET','POST'])
+@nocache
+def deletePlayerInjury():
+	if request.method == 'POST':
+		conn = psycopg2.connect(database="basketball", user="postgres", password="password")							 
+		cur = conn.cursor()
+		playerId = request.form['player_id']		
+		cur.execute("SELECT player_id FROM player_injury;")		
+		result = cur.fetchall()
+		player_list = []
+		for i in result:
+			player_list.append(i[0])
+		if(playerId in player_list):		
+			cur.execute("DELETE from player_injury where player_id = %(id)s",{'id': playerId})
+			conn.commit()
+			return render_template("player_injury.html")	
+		else: 
+			return render_template('error.html',error = "No injury information for this player. ")
+		cur.close()
+		conn.close()
+	else:
+		return render_template("view_playerStat.html")				
+				
+		
+		
+		
+		
+		
+		
+		
 
 
 		
@@ -704,10 +893,57 @@ def viewDivision():
 		conn.close()	
 		
 		
+
+		
+@app.route('/deleteDivision',methods=['GET','POST'])
+@nocache
+def deleteDivision():
+	if request.method == 'POST':
+		conn = psycopg2.connect(database="basketball", user="postgres", password="password")							 
+		cur = conn.cursor()
+		divisionId = request.form['division_id']		
+		cur.execute("SELECT division_id FROM division;")		
+		result = cur.fetchall()
+		division_list = []
+		for i in result:
+			division_list.append(i[0])
+		cur.execute("SELECT division_id FROM attendance;")		
+		resultI = cur.fetchall()
+		divisionI_list = []
+		for i in resultI:
+			divisionI_list.append(i[0])
+		cur.execute("SELECT division_id FROM referee;")		
+		resultII = cur.fetchall()
+		divisionII_list = []
+		for i in resultII:
+			divisionII_list.append(i[0])
+		
+		if(divisionId in division_list and divisionId not in divisionI_list and divisionId not in divisionII_list):		
+			cur.execute("DELETE from division where division_id = %(id)s",{'id': divisionId})
+			conn.commit()
+			return render_template("division.html")	
+		elif (divisionId in division_list and divisionId in divisionII_list):	
+			return render_template('error.html',error = "Please delete the entry in division table first and then delete the division information from this table. ") 
+		elif (divisionId in division_list and divisionId in divisionI_list):	
+			return render_template('error.html',error = "Please delete the entry in attendance table first and then delete the division information from this table. ") 
+		else: 
+			return render_template('error.html',error = "Division does not exist ")
+		cur.close()
+		conn.close()
+	else:
+		return render_template("view_playerInfo.html")			
+
+
+
+
+
+
+
+
 		
 		
 		
-		
+
 
 
 

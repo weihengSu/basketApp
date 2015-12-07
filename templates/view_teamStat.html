@@ -38,6 +38,24 @@
 			
  
         </div>
+		
+		
+	<div class="jumbotron">
+      
+
+	  <form  class="form-signup" action="/deleteTeamStat" method="POST">
+        <input type="text" required class="form-control" placeholder="Please enter a team's id to delete the team Statistics" name="team_id" value="{{
+          request.form.team_id }}">
+
+        <input class="btn btn-lg btn-primary btn-block" type="submit" value="Delete" id="btnSignin">
+      </form>
+      </div>
+		
+		
+		
+		
+		
+		
         <div class="panel panel-primary">
         <!-- Default panel contents -->
         <div class="panel-heading"><h4>Teams</h4></div>

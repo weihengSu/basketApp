@@ -33,11 +33,30 @@
  
  
  
+ 
+ 
+ 
+ 
         <div class="jumbotron">
-            <h1>Players Information</h1>
+            <h1>Player Information</h1>
 			
  
         </div>
+		
+		
+	<div class="jumbotron">
+      
+
+	  <form  class="form-signup" action="/deletePlayerStat" method="POST">
+        <input type="text" required class="form-control" placeholder="Please enter a player's id to delete the player Statistics" name="player_id" value="{{
+          request.form.player_id }}">
+
+        <input class="btn btn-lg btn-primary btn-block" type="submit" value="Delete" id="btnSignin">
+      </form>
+      </div>
+		
+		
+		
         <div class="panel panel-primary">
         <!-- Default panel contents -->
         <div class="panel-heading"><h4>Players</h4></div>
